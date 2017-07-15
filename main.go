@@ -11,23 +11,39 @@ import (
 	_ "github.com/jinzhu/gorm/dialects/postgres"
 	"gopkg.in/go-playground/validator.v9"
 	"github.com/matthewR1993/services/valid"
+	redigo "github.com/garyburd/redigo/redis"
+	"github.com/matthewR1993/services/redis"
 	
 )
 
-var debug bool
+var (
+	debug = flag.Bool("debug", false, "Debug mode")
+	redisAddress = flag.String("redis-address", ":6379", "Address to the Redis server")
+	redisMaxConnections = flag.Int("redis-max-connections", 10, "Max connections to Redis")
+)
 
 func init() {
-	// parse console parameters
-	flag.BoolVar(&debug, "debug", false, "Debug mode")
-	flag.Parse()
-	
-	// setup log settings
+	// Setup log settings
 	log.SetFormatter(&log.JSONFormatter{})
 	log.SetLevel(log.WarnLevel)
+
+	flag.Parse()
 }
 
 func main() {
-	// setup validator
+	// Redis connection pool initialization
+	redis.RedisPool = redigo.NewPool(func() (redigo.Conn, error) {
+		c, err := redigo.Dial("tcp", *redisAddress)
+
+		if err != nil {
+			return nil, err
+		}
+
+		return c, err
+	}, *redisMaxConnections)
+	defer redis.RedisPool.Close()
+	
+	// Setup validator
 	valid.Validate = validator.New()
 
 	// Setup log file
@@ -38,7 +54,7 @@ func main() {
 	defer f.Close()
 	log.SetOutput(f)
 
-	if debug == true { log.SetOutput(os.Stdout) }
+	if *debug == true { log.SetOutput(os.Stdout) }
 
 	// Db connection initialization
 	var err error
@@ -53,7 +69,7 @@ func main() {
 	srv.SetConf(service.Config{
 		Host: "127.0.0.1",
 		Port: "8080",
-		AssetsDir : "frontend/static",
+		AssetsDir : "frontend/dist",
 	})
 
 	// Endpoints registration
@@ -62,14 +78,15 @@ func main() {
 		endpoints.TestEcho,
 		endpoints.RegisterNewUser,
 		endpoints.GenerateAuthToken,
+		endpoints.GetUserInformation,
 	)
 
-	// Shared middleware registration (affect all endpoints)
+	// Shared middleware registration. It affects all endpoints and it is triggered first.
 	srv.AddMiddlewares(
-		//endpoints.RequestConsoleLog,
+		endpoints.CORSMiddle,
 	)
 
-	if debug == true { srv.AddMiddlewares(endpoints.RequestConsoleLog) }
+	if *debug == true { srv.AddMiddlewares(endpoints.RequestConsoleLog) }
 
 	srv.Run()
 }

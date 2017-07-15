@@ -24,6 +24,7 @@ type UserHistory struct {
 	UserId		uint
 	Urls		string
 	History		string
+	CreatedAt 	time.Time `gorm:"not null"`
 }
 
 func (u UserHistory) TableName() string {

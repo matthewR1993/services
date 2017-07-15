@@ -20,7 +20,9 @@ var TestEcho = Endpoint {
 		fmt.Fprint(w, "echo")
 		log.Warning("some warning")
 	},
-	[]Middleware{EchoMiddle1, EchoMiddle2},
+	[]Middleware{},
+	// e. g.:
+	// []Middleware{EchoMiddle1, EchoMiddle2},
 	// Evaluation order:  [ [SharedMiddlewares,...] --> Middleware2 --> Middleware1 --> FinalHandler ]
 }
 

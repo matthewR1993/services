@@ -119,7 +119,11 @@ var GenerateAuthToken = Endpoint {
 			token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
 				"loggedInAs": "user",
 				"email": user.Email,
-				"nbf": time.Date(2015, 10, 10, 12, 0, 0, 0, time.UTC).Unix(),
+				"nbf": time.Now().Add(time.Second * 1).Unix(),
+				"exp": time.Now().Add(time.Second * 3600 * 24).Unix(), // 1 day
+				"aud": "mobile",
+				"iat": time.Now().Unix(),
+				"sub": "identification",
 			})
 
 			tokenString, err := token.SignedString([]byte(crypto.HmacSecretKey))
@@ -145,7 +149,17 @@ var GenerateAuthToken = Endpoint {
 	[]Middleware{},
 }
 
-
-
-
+/*
+  Example with jwt middleware
+  http GET: /api/v1/user/history?startdate=30.01.1995&enddate=30.02.1995
+*/
+var GetUserInformation = Endpoint {
+	"/api/v1/user/history",
+	"GET",
+	"<Get user history>",
+	func(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
+		w.Write([]byte(ps.ByName("email")))
+	},
+	[]Middleware{VerifyUserToken},
+}
 

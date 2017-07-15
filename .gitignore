@@ -2,3 +2,4 @@
 services
 redis.log
 logfile.log
+.idea

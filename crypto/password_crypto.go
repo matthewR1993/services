@@ -11,8 +11,7 @@ import (
 
 func random_bytes(strlen int) []byte {
 	var r *rand.Rand = rand.New(rand.NewSource(time.Now().UnixNano()))
-	// allowed symbols
-	const chars = "abcdefghijklmnopqrstuvwxyz123456789"
+	const chars = "abcdefghijklmnopqrstuvwxyz123456789"  // Allowed symbols
 	result := make([]byte, strlen)
 	for i := range result {
 		result[i] = chars[r.Intn(len(chars))]
@@ -31,7 +30,7 @@ func GeneratePDKDF2key(password []byte) []byte {
 
 	// calculate hash
 	key := pbkdf2.Key(password, salt, 4096, sha256.Size, sha256.New)
-	s := b64.StdEncoding.EncodeToString(key) // base64 decoded
+	s := b64.StdEncoding.EncodeToString(key) // base64 encoded
 	hash := []byte(s)
 
 	dlr := byte(0x24)  // '$' - symbol 
@@ -49,7 +48,7 @@ func GeneratePDKDF2key(password []byte) []byte {
 
 func GetHash(password []byte, salt []byte) []byte {
 	key := pbkdf2.Key(password, salt, 4096, sha256.Size, sha256.New)
-	s := b64.StdEncoding.EncodeToString(key) // base64 decoded
+	s := b64.StdEncoding.EncodeToString(key)
 	hash := []byte(s)
 	return hash
 }

@@ -19,7 +19,7 @@ updatedeps:
 	go get -v -u $(DEPS)
 
 rundev: build
-	./$(BUILDNAME) -debug=true
+	./$(BUILDNAME)
 	
 run:
 	go build
