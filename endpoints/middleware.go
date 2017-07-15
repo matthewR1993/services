@@ -2,10 +2,6 @@
 
 package endpoints
 
-import (
-	//"fmt"
-)
-
 type Middleware func(Handler) Handler
 
 /*

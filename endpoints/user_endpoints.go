@@ -3,7 +3,6 @@
 package endpoints
 
 import (
-	//"io"
 	"encoding/json"
 	"net/http"
 	"github.com/julienschmidt/httprouter"

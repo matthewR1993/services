@@ -34,7 +34,6 @@ func main() {
 	// Redis connection pool initialization
 	redis.RedisPool = redigo.NewPool(func() (redigo.Conn, error) {
 		c, err := redigo.Dial("tcp", *redisAddress)
-
 		if err != nil {
 			return nil, err
 		}

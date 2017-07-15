@@ -21,7 +21,7 @@ var TestEcho = Endpoint {
 		log.Warning("some warning")
 	},
 	[]Middleware{},
-	// e. g.:
+	// Example:
 	// []Middleware{EchoMiddle1, EchoMiddle2},
 	// Evaluation order:  [ [SharedMiddlewares,...] --> Middleware2 --> Middleware1 --> FinalHandler ]
 }
