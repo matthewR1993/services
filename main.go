@@ -20,6 +20,9 @@ var (
 	debug = flag.Bool("debug", false, "Debug mode")
 	redisAddress = flag.String("redis-address", ":6379", "Address to the Redis server")
 	redisMaxConnections = flag.Int("redis-max-connections", 10, "Max connections to Redis")
+	postgresHost = flag.String("pg-adress", "127.0.0.1", "postgres ip")
+	postgresPort = flag.String("pg-port", ":5432", "postgres port")
+	appPort = flag.String("app-port", ":8080", "app port")
 )
 
 func init() {

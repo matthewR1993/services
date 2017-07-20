@@ -8,4 +8,3 @@ ENTRYPOINT /go_workspace/src/github.com/matthewR1993/services
 
 EXPOSE 8080
 
-
