@@ -7,10 +7,10 @@ DEPS +=	gopkg.in/go-playground/validator.v9
 DEPS +=	github.com/asaskevich/govalidator
 DEPS +=	github.com/dgrijalva/jwt-go
 
-BUILDNAME := services 
+BUILDNAME := auth-service 
 
 build: deps
-	go build
+	go build -o $(BUILDNAME)
 
 deps:
 	go get -v $(DEPS)
@@ -19,10 +19,10 @@ updatedeps:
 	go get -v -u $(DEPS)
 
 rundev: build
-	./$(BUILDNAME)
+	./$(BUILDNAME) -debug=true 
 	
 run:
-	go build
+	build
 	./$(BUILDNAME) -debug=false > log_$(BUILDNAME) 
 
 clean:

@@ -72,7 +72,7 @@ func (s Service) HandleAllEndpoints(router *httprouter.Router) {
 			handler = mdlwre(handler)
 		}
 
-		router.Handle(endpt.Method, endpt.Path, httprouter.Handle(handler))  // (endpt.Handler)
+		router.Handle(endpt.Method, endpt.Path, httprouter.Handle(handler))
 	}
 }
 
@@ -86,7 +86,7 @@ func (s Service) Run() {
 
 	fmt.Println(fmt.Sprintf(" Listening on %v:%s", s.Config.Host, s.Config.Port))
 
-	// Simple http 1.1
+	// http 1.1
 	log.Fatal(http.ListenAndServe(fmt.Sprintf("%v:%s", s.Config.Host, s.Config.Port), router))
 
 	// With TLS

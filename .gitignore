@@ -1,5 +1,16 @@
+###Go###
+
 *~
-services
+auth-service
 redis.log
 logfile.log
 .idea
+
+*.exe
+*.test
+*.prof
+
+# Compiled Object files, Static and Dynamic libs (Shared Objects)
+*.o
+*.a
+*.so
