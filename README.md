@@ -12,7 +12,7 @@ $ make build
 
 Run:
 ```sh
-$ ./service
+$ ./auth-service
 ```
 
 Run as docker container:
