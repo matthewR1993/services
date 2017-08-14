@@ -23,7 +23,7 @@ var (
 	redisMaxConnections = flag.Int("redis-max-connections", 10, "Max connections to Redis")
 	postgresHost = flag.String("pg-host", "127.0.0.1", "postgres ip")
 	postgresPort = flag.String("pg-port", "5432", "postgres port")
-	appPort = flag.String("app-port", ":8080", "app port")
+	appPort = flag.String("app-port", "8080", "app port")
 )
 
 func init() {
@@ -55,7 +55,6 @@ func main() {
 	// Setup log file
 	f, errf := os.OpenFile("logfile.log", os.O_RDWR | os.O_CREATE | os.O_APPEND, 0666)
 	if errf != nil {
-		fmt.Println(errf)
 		log.Fatal(errf)
 	}
 	defer f.Close()
@@ -69,7 +68,6 @@ func main() {
 		fmt.Sprintf("host=%s port=%s user=%s dbname=storage sslmode=disable password=%s",
 		*postgresHost, *postgresPort, util.AppConf.PgUsername, util.AppConf.PgPassword))
 	if err != nil {
-		fmt.Println(err)
 		log.Fatal(err)
 	}
 	defer db.DBCon.Close()
@@ -78,7 +76,7 @@ func main() {
 	srv := service.Init()
 	srv.SetConf(service.Config{
 		Host: "127.0.0.1",
-		Port: "8080",
+		Port: *appPort,
 		AssetsDir : "frontend/dist",
 	})
 
