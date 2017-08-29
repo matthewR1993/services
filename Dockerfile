@@ -1,10 +1,12 @@
 FROM golang:latest
 
-ADD . /go/src/github.com/matthewR1993/services
+ENV REPO github.com/matthewR1993/services
 
-WORKDIR /go/src/github.com/matthewR1993/services
+ADD . /go/src/$REPO
 
-ENV PATH /go/src/github.com/matthewR1993/services:$PATH
+WORKDIR /go/src/$REPO
+
+ENV PATH /go/src/$REPO:$PATH
 
 ENV PG_HOST="253.122.11.15"
 ENV PG_PORT="7891"
